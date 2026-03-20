@@ -143,8 +143,8 @@ use util::{
 };
 use uuid::Uuid;
 pub use workspace_settings::{
-    AutosaveSetting, BottomDockLayout, RestoreOnStartupBehavior, StatusBarSettings, TabBarSettings,
-    WorkspaceSettings,
+    AutosaveSetting, BottomDockLayout, DockPanelMode, RestoreOnStartupBehavior,
+    StatusBarSettings, TabBarSettings, WorkspaceSettings,
 };
 use zed_actions::{Spawn, feedback::FileBugReport, theme::ToggleMode};
 
@@ -7178,6 +7178,10 @@ impl Workspace {
                 .child(dock.clone())
                 .children(leader_border),
         )
+    }
+
+    fn dock_panel_mode(&self, cx: &App) -> DockPanelMode {
+        WorkspaceSettings::get_global(cx).dock_panel_mode
     }
 
     fn render_project_panel_overlay(
