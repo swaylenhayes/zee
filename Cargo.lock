@@ -13271,6 +13271,7 @@ dependencies = [
  "editor",
  "feature_flags",
  "file_icons",
+ "fs",
  "git",
  "git_ui",
  "gpui",
