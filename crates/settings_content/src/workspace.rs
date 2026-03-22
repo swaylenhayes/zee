@@ -776,6 +776,14 @@ pub struct ProjectPanelSettingsContent {
     ///
     /// Default: directories_first
     pub sort_mode: Option<ProjectPanelSortMode>,
+    /// What field to sort sibling entries by in the project panel.
+    ///
+    /// Default: name
+    pub sort_by: Option<ProjectPanelSortBy>,
+    /// What direction to apply when sorting sibling entries in the project panel.
+    ///
+    /// Default: ascending
+    pub sort_direction: Option<ProjectPanelSortDirection>,
     /// Whether to show error and warning count badges next to file names in the project panel.
     ///
     /// Default: false
@@ -832,6 +840,52 @@ pub enum ProjectPanelSortMode {
     Mixed,
     /// Show files first, then directories
     FilesFirst,
+}
+
+#[derive(
+    Copy,
+    Clone,
+    Debug,
+    Default,
+    Serialize,
+    Deserialize,
+    JsonSchema,
+    MergeFrom,
+    PartialEq,
+    Eq,
+    strum::VariantArray,
+    strum::VariantNames,
+)]
+#[serde(rename_all = "snake_case")]
+pub enum ProjectPanelSortBy {
+    /// Sort by entry name.
+    #[default]
+    Name,
+    /// Sort by entry modification time.
+    ModifiedTime,
+}
+
+#[derive(
+    Copy,
+    Clone,
+    Debug,
+    Default,
+    Serialize,
+    Deserialize,
+    JsonSchema,
+    MergeFrom,
+    PartialEq,
+    Eq,
+    strum::VariantArray,
+    strum::VariantNames,
+)]
+#[serde(rename_all = "snake_case")]
+pub enum ProjectPanelSortDirection {
+    /// Sort from lowest to highest.
+    #[default]
+    Ascending,
+    /// Sort from highest to lowest.
+    Descending,
 }
 
 #[with_fallible_options]
