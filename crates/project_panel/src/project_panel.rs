@@ -7473,6 +7473,8 @@ fn cmp_sort_nodes(
                     settings::ProjectPanelSortDirection::Descending => time_cmp.reverse(),
                 }
             }
+            (Some(_), None) => cmp::Ordering::Less,
+            (None, Some(_)) => cmp::Ordering::Greater,
             _ => name_cmp,
         },
     }
