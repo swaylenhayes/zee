@@ -818,6 +818,22 @@
     // 3. Show files first, then directories:
     //    "files_first"
     "sort_mode": "directories_first",
+    // What field to sort project panel entries by.
+    // This setting can take two values:
+    //
+    // 1. Sort by entry name:
+    //    "name"
+    // 2. Sort by entry modification time:
+    //    "modified_time"
+    "sort_by": "name",
+    // What direction to apply when sorting project panel entries.
+    // This setting can take two values:
+    //
+    // 1. Sort from low to high:
+    //    "ascending"
+    // 2. Sort from high to low:
+    //    "descending"
+    "sort_direction": "ascending",
     // Whether to show error and warning count badges next to file names in the project panel.
     "diagnostic_badges": false,
     // Whether to enable drag-and-drop operations in the project panel.

@@ -44,8 +44,8 @@ use rayon::slice::ParallelSliceMut;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use settings::{
-    DockSide, ProjectPanelEntrySpacing, Settings, SettingsStore, ShowDiagnostics, ShowIndentGuides,
-    update_settings_file,
+    DockSide, ProjectPanelEntrySpacing, ProjectPanelSortBy, ProjectPanelSortDirection, Settings,
+    SettingsStore, ShowDiagnostics, ShowIndentGuides, update_settings_file,
 };
 use smallvec::SmallVec;
 use std::ops::Neg;
@@ -850,6 +850,12 @@ impl ProjectPanel {
                         this.update_visible_entries(None, false, false, window, cx);
                     }
                     if project_panel_settings.sort_mode != new_settings.sort_mode {
+                        this.update_visible_entries(None, false, false, window, cx);
+                    }
+                    if project_panel_settings.sort_by != new_settings.sort_by {
+                        this.update_visible_entries(None, false, false, window, cx);
+                    }
+                    if project_panel_settings.sort_direction != new_settings.sort_direction {
                         this.update_visible_entries(None, false, false, window, cx);
                     }
                     if project_panel_settings.sticky_scroll && !new_settings.sticky_scroll {
@@ -2084,7 +2090,9 @@ impl ProjectPanel {
         }
 
         if let Some(workspace) = self.workspace.upgrade()
-            && workspace.read(cx).panel_is_overlay_visible::<ProjectPanel>(cx)
+            && workspace
+                .read(cx)
+                .panel_is_overlay_visible::<ProjectPanel>(cx)
         {
             window.defer(cx, move |window, cx| {
                 workspace.update(cx, |workspace, cx| {
@@ -2593,8 +2601,13 @@ impl ProjectPanel {
                 .map(|entry| entry.to_owned())
                 .collect();
 
-        let mode = ProjectPanelSettings::get_global(cx).sort_mode;
-        sort_worktree_entries_with_mode(&mut siblings, mode);
+        let settings = ProjectPanelSettings::get_global(cx);
+        sort_worktree_entries(
+            &mut siblings,
+            settings.sort_mode,
+            settings.sort_by,
+            settings.sort_direction,
+        );
         let sibling_entry_index = siblings
             .iter()
             .position(|sibling| sibling.id == latest_entry.id)?;
@@ -4023,6 +4036,8 @@ impl ProjectPanel {
         let auto_collapse_dirs = settings.auto_fold_dirs;
         let hide_gitignore = settings.hide_gitignore;
         let sort_mode = settings.sort_mode;
+        let sort_by = settings.sort_by;
+        let sort_direction = settings.sort_direction;
         let project = self.project.read(cx);
         let repo_snapshots = project.git_store().read(cx).repo_snapshots(cx);
 
@@ -4254,9 +4269,11 @@ impl ProjectPanel {
                             entry_iter.advance();
                         }
 
-                        par_sort_worktree_entries_with_mode(
+                        par_sort_worktree_entries(
                             &mut visible_worktree_entries,
                             sort_mode,
+                            sort_by,
+                            sort_direction,
                         );
                         new_state.visible_entries.push(VisibleEntriesForWorktree {
                             worktree_id,
@@ -7379,7 +7396,7 @@ fn cmp_files_first(a: &Entry, b: &Entry) -> cmp::Ordering {
 }
 
 #[inline]
-fn cmp_with_mode(a: &Entry, b: &Entry, mode: &settings::ProjectPanelSortMode) -> cmp::Ordering {
+fn cmp_with_mode(a: &Entry, b: &Entry, mode: settings::ProjectPanelSortMode) -> cmp::Ordering {
     match mode {
         settings::ProjectPanelSortMode::DirectoriesFirst => cmp_directories_first(a, b),
         settings::ProjectPanelSortMode::Mixed => cmp_mixed(a, b),
@@ -7387,18 +7404,66 @@ fn cmp_with_mode(a: &Entry, b: &Entry, mode: &settings::ProjectPanelSortMode) ->
     }
 }
 
+#[inline]
+fn cmp_with_options(
+    a: &Entry,
+    b: &Entry,
+    mode: settings::ProjectPanelSortMode,
+    sort_by: settings::ProjectPanelSortBy,
+    _sort_direction: settings::ProjectPanelSortDirection,
+) -> cmp::Ordering {
+    match sort_by {
+        settings::ProjectPanelSortBy::Name => cmp_with_mode(a, b, mode),
+        settings::ProjectPanelSortBy::ModifiedTime => {
+            // Checkpoint 1 only lands the settings and comparator shape.
+            // Checkpoint 2 wires modification-time ordering into this path.
+            cmp_with_mode(a, b, mode)
+        }
+    }
+}
+
+pub fn sort_worktree_entries(
+    entries: &mut [impl AsRef<Entry>],
+    mode: settings::ProjectPanelSortMode,
+    sort_by: settings::ProjectPanelSortBy,
+    sort_direction: settings::ProjectPanelSortDirection,
+) {
+    entries.sort_by(|lhs, rhs| {
+        cmp_with_options(lhs.as_ref(), rhs.as_ref(), mode, sort_by, sort_direction)
+    });
+}
+
 pub fn sort_worktree_entries_with_mode(
     entries: &mut [impl AsRef<Entry>],
     mode: settings::ProjectPanelSortMode,
 ) {
-    entries.sort_by(|lhs, rhs| cmp_with_mode(lhs.as_ref(), rhs.as_ref(), &mode));
+    sort_worktree_entries(
+        entries,
+        mode,
+        ProjectPanelSortBy::Name,
+        ProjectPanelSortDirection::Ascending,
+    );
+}
+
+pub fn par_sort_worktree_entries(
+    entries: &mut Vec<GitEntry>,
+    mode: settings::ProjectPanelSortMode,
+    sort_by: settings::ProjectPanelSortBy,
+    sort_direction: settings::ProjectPanelSortDirection,
+) {
+    entries.par_sort_by(|lhs, rhs| cmp_with_options(lhs, rhs, mode, sort_by, sort_direction));
 }
 
 pub fn par_sort_worktree_entries_with_mode(
     entries: &mut Vec<GitEntry>,
     mode: settings::ProjectPanelSortMode,
 ) {
-    entries.par_sort_by(|lhs, rhs| cmp_with_mode(lhs, rhs, &mode));
+    par_sort_worktree_entries(
+        entries,
+        mode,
+        ProjectPanelSortBy::Name,
+        ProjectPanelSortDirection::Ascending,
+    );
 }
 
 #[cfg(test)]
