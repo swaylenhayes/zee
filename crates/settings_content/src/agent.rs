@@ -85,6 +85,10 @@ pub struct AgentSettingsContent {
     ///
     /// Default: follow_agent
     pub sidebar_side: Option<SidebarDockPosition>,
+    /// Overrides the global dock panel display mode for the agent panel.
+    ///
+    /// Default: inherits `dock_panel_mode`
+    pub dock_panel_mode: Option<crate::DockPanelMode>,
     /// Default width in pixels when the agent panel is docked to the left or right.
     ///
     /// Default: 640

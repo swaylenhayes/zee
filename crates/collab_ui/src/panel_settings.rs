@@ -1,5 +1,5 @@
 use gpui::Pixels;
-use settings::{RegisterSetting, Settings};
+use settings::{DockPanelMode, RegisterSetting, Settings};
 use ui::px;
 use workspace::dock::DockPosition;
 
@@ -7,6 +7,7 @@ use workspace::dock::DockPosition;
 pub struct CollaborationPanelSettings {
     pub button: bool,
     pub dock: DockPosition,
+    pub dock_panel_mode: Option<DockPanelMode>,
     pub default_width: Pixels,
 }
 
@@ -14,6 +15,7 @@ pub struct CollaborationPanelSettings {
 pub struct NotificationPanelSettings {
     pub button: bool,
     pub dock: DockPosition,
+    pub dock_panel_mode: Option<DockPanelMode>,
     pub default_width: Pixels,
     pub show_count_badge: bool,
 }
@@ -25,6 +27,7 @@ impl Settings for CollaborationPanelSettings {
         Self {
             button: panel.button.unwrap(),
             dock: panel.dock.unwrap().into(),
+            dock_panel_mode: panel.dock_panel_mode,
             default_width: panel.default_width.map(px).unwrap(),
         }
     }
@@ -36,6 +39,7 @@ impl Settings for NotificationPanelSettings {
         return Self {
             button: panel.button.unwrap(),
             dock: panel.dock.unwrap().into(),
+            dock_panel_mode: panel.dock_panel_mode,
             default_width: panel.default_width.map(px).unwrap(),
             show_count_badge: panel.show_count_badge.unwrap(),
         };

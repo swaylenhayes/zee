@@ -7252,6 +7252,10 @@ impl Panel for ProjectPanel {
         ProjectPanelSettings::get_global(cx).default_width
     }
 
+    fn dock_panel_mode(&self, cx: &App) -> Option<settings::DockPanelMode> {
+        ProjectPanelSettings::get_global(cx).dock_panel_mode
+    }
+
     fn icon(&self, _: &Window, cx: &App) -> Option<IconName> {
         ProjectPanelSettings::get_global(cx)
             .button

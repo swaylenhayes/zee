@@ -3,8 +3,9 @@ use gpui::Pixels;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use settings::{
-    DockSide, ProjectPanelEntrySpacing, ProjectPanelSortBy, ProjectPanelSortDirection,
-    ProjectPanelSortMode, RegisterSetting, Settings, ShowDiagnostics, ShowIndentGuides,
+    DockPanelMode, DockSide, ProjectPanelEntrySpacing, ProjectPanelSortBy,
+    ProjectPanelSortDirection, ProjectPanelSortMode, RegisterSetting, Settings, ShowDiagnostics,
+    ShowIndentGuides,
 };
 use ui::{
     px,
@@ -17,6 +18,7 @@ pub struct ProjectPanelSettings {
     pub hide_gitignore: bool,
     pub default_width: Pixels,
     pub dock: DockSide,
+    pub dock_panel_mode: Option<DockPanelMode>,
     pub entry_spacing: ProjectPanelEntrySpacing,
     pub file_icons: bool,
     pub folder_icons: bool,
@@ -99,6 +101,7 @@ impl Settings for ProjectPanelSettings {
             hide_gitignore: project_panel.hide_gitignore.unwrap(),
             default_width: px(project_panel.default_width.unwrap()),
             dock: project_panel.dock.unwrap(),
+            dock_panel_mode: project_panel.dock_panel_mode,
             entry_spacing: project_panel.entry_spacing.unwrap(),
             file_icons: project_panel.file_icons.unwrap(),
             folder_icons: project_panel.folder_icons.unwrap(),

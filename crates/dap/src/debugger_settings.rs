@@ -1,5 +1,5 @@
 use dap_types::SteppingGranularity;
-use settings::{RegisterSetting, Settings, SettingsContent};
+use settings::{DockPanelMode, RegisterSetting, Settings, SettingsContent};
 
 #[derive(Debug, RegisterSetting)]
 pub struct DebuggerSettings {
@@ -31,6 +31,7 @@ pub struct DebuggerSettings {
     ///
     /// Default: Bottom
     pub dock: settings::DockPosition,
+    pub dock_panel_mode: Option<DockPanelMode>,
 }
 
 impl Settings for DebuggerSettings {
@@ -46,6 +47,7 @@ impl Settings for DebuggerSettings {
             log_dap_communications: content.log_dap_communications.unwrap(),
             format_dap_log_messages: content.format_dap_log_messages.unwrap(),
             dock: content.dock.unwrap(),
+            dock_panel_mode: content.dock_panel_mode,
         }
     }
 }

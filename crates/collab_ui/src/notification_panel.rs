@@ -593,6 +593,10 @@ impl Panel for NotificationPanel {
         NotificationPanelSettings::get_global(cx).default_width
     }
 
+    fn dock_panel_mode(&self, cx: &App) -> Option<settings::DockPanelMode> {
+        NotificationPanelSettings::get_global(cx).dock_panel_mode
+    }
+
     fn set_active(&mut self, active: bool, _: &mut Window, cx: &mut Context<Self>) {
         self.active = active;
 

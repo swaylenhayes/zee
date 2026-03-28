@@ -5793,6 +5793,10 @@ impl Panel for GitPanel {
         GitPanelSettings::get_global(cx).default_width
     }
 
+    fn dock_panel_mode(&self, cx: &App) -> Option<settings::DockPanelMode> {
+        GitPanelSettings::get_global(cx).dock_panel_mode
+    }
+
     fn icon(&self, _: &Window, cx: &App) -> Option<ui::IconName> {
         Some(ui::IconName::GitBranchAlt).filter(|_| GitPanelSettings::get_global(cx).button)
     }

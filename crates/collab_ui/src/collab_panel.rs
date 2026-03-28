@@ -3372,6 +3372,10 @@ impl Panel for CollabPanel {
         CollaborationPanelSettings::get_global(cx).default_width
     }
 
+    fn dock_panel_mode(&self, cx: &App) -> Option<settings::DockPanelMode> {
+        CollaborationPanelSettings::get_global(cx).dock_panel_mode
+    }
+
     fn icon(&self, _window: &Window, cx: &App) -> Option<ui::IconName> {
         CollaborationPanelSettings::get_global(cx)
             .button

@@ -38,6 +38,9 @@ pub trait Panel: Focusable + EventEmitter<PanelEvent> + Render + Sized {
     fn position_is_valid(&self, position: DockPosition) -> bool;
     fn set_position(&mut self, position: DockPosition, window: &mut Window, cx: &mut Context<Self>);
     fn default_size(&self, window: &Window, cx: &App) -> Pixels;
+    fn dock_panel_mode(&self, _cx: &App) -> Option<settings::DockPanelMode> {
+        None
+    }
     fn initial_size_state(&self, _window: &Window, _cx: &App) -> PanelSizeState {
         PanelSizeState::default()
     }
@@ -81,6 +84,7 @@ pub trait PanelHandle: Send + Sync {
     fn position(&self, window: &Window, cx: &App) -> DockPosition;
     fn position_is_valid(&self, position: DockPosition, cx: &App) -> bool;
     fn set_position(&self, position: DockPosition, window: &mut Window, cx: &mut App);
+    fn dock_panel_mode(&self, cx: &App) -> Option<settings::DockPanelMode>;
     fn is_zoomed(&self, window: &Window, cx: &App) -> bool;
     fn set_zoomed(&self, zoomed: bool, window: &mut Window, cx: &mut App);
     fn set_active(&self, active: bool, window: &mut Window, cx: &mut App);
@@ -142,6 +146,10 @@ where
 
     fn set_position(&self, position: DockPosition, window: &mut Window, cx: &mut App) {
         self.update(cx, |this, cx| this.set_position(position, window, cx))
+    }
+
+    fn dock_panel_mode(&self, cx: &App) -> Option<settings::DockPanelMode> {
+        self.read(cx).dock_panel_mode(cx)
     }
 
     fn is_zoomed(&self, window: &Window, cx: &App) -> bool {
@@ -1219,6 +1227,7 @@ pub mod test {
 
     pub struct TestPanel {
         pub position: DockPosition,
+        pub dock_panel_mode: Option<settings::DockPanelMode>,
         pub zoomed: bool,
         pub active: bool,
         pub focus_handle: FocusHandle,
@@ -1234,12 +1243,25 @@ pub mod test {
         pub fn new(position: DockPosition, activation_priority: u32, cx: &mut App) -> Self {
             Self {
                 position,
+                dock_panel_mode: None,
                 zoomed: false,
                 active: false,
                 focus_handle: cx.focus_handle(),
                 default_size: px(300.),
                 flexible: false,
                 activation_priority,
+            }
+        }
+
+        pub fn new_with_mode(
+            position: DockPosition,
+            activation_priority: u32,
+            dock_panel_mode: settings::DockPanelMode,
+            cx: &mut App,
+        ) -> Self {
+            Self {
+                dock_panel_mode: Some(dock_panel_mode),
+                ..Self::new(position, activation_priority, cx)
             }
         }
 
@@ -1285,6 +1307,10 @@ pub mod test {
 
         fn default_size(&self, _window: &Window, _: &App) -> Pixels {
             self.default_size
+        }
+
+        fn dock_panel_mode(&self, _: &App) -> Option<settings::DockPanelMode> {
+            self.dock_panel_mode
         }
 
         fn initial_size_state(&self, _window: &Window, _: &App) -> PanelSizeState {

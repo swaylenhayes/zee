@@ -91,15 +91,6 @@
   // 1. "push" keeps the current Zed behavior where docks participate in layout.
   // 2. "overlay" renders dock panels above the workspace instead of reflowing it.
   "dock_panel_mode": "push",
-  // Optional per-panel dock mode overrides keyed by each panel's internal panel key.
-  // Panels not listed here fall back to `dock_panel_mode`.
-  // Valid override values are "push" and "overlay".
-  // Example:
-  // "dock_panel_modes": {
-  //   "ProjectPanel": "overlay",
-  //   "OutlinePanel": "push",
-  //   "TerminalPanel": "overlay"
-  // },
   // The direction that you want to split panes horizontally. Defaults to "down"
   "pane_split_direction_horizontal": "down",
   // The direction that you want to split panes vertically. Defaults to "right"
@@ -719,6 +710,9 @@
     "default_width": 240,
     // Where to dock the project panel. Can be 'left' or 'right'.
     "dock": "left",
+    // Override the global `dock_panel_mode` for the project panel.
+    // Valid values: "push", "overlay"
+    // "dock_panel_mode": "overlay",
     // Spacing between worktree entries in the project panel. Can be 'comfortable' or 'standard'.
     "entry_spacing": "comfortable",
     // Whether to show file icons in the project panel.
@@ -837,6 +831,9 @@
     "default_width": 300,
     // Where to dock the outline panel. Can be 'left' or 'right'.
     "dock": "left",
+    // Override the global `dock_panel_mode` for the outline panel.
+    // Valid values: "push", "overlay"
+    // "dock_panel_mode": "overlay",
     // Whether to show file icons in the outline panel.
     "file_icons": true,
     // Whether to show folder icons or chevrons for directories in the outline panel.
@@ -889,6 +886,9 @@
     "button": true,
     // Where to dock the collaboration panel. Can be 'left' or 'right'.
     "dock": "left",
+    // Override the global `dock_panel_mode` for the collaboration panel.
+    // Valid values: "push", "overlay"
+    // "dock_panel_mode": "overlay",
     // Default width of the collaboration panel.
     "default_width": 240,
   },
@@ -897,6 +897,9 @@
     "button": true,
     // Where to dock the git panel. Can be 'left' or 'right'.
     "dock": "left",
+    // Override the global `dock_panel_mode` for the git panel.
+    // Valid values: "push", "overlay"
+    // "dock_panel_mode": "overlay",
     // Default width of the git panel.
     "default_width": 360,
     // Style of the git status indicator in the panel.
@@ -958,6 +961,9 @@
     "button": true,
     // Where to dock the notification panel. Can be 'left' or 'right'.
     "dock": "right",
+    // Override the global `dock_panel_mode` for the notification panel.
+    // Valid values: "push", "overlay"
+    // "dock_panel_mode": "overlay",
     // Default width of the notification panel.
     "default_width": 380,
     // Whether to show a badge on the notification panel icon with the count of unread notifications.
@@ -974,6 +980,9 @@
     "dock": "right",
     // Where to position the sidebar. Can be 'left', 'right', or 'follow_agent'.
     "sidebar_side": "follow_agent",
+    // Override the global `dock_panel_mode` for the agent panel.
+    // Valid values: "push", "overlay"
+    // "dock_panel_mode": "overlay",
     // Default width when the agent panel is docked to the left or right.
     "default_width": 640,
     // Default height when the agent panel is docked to the bottom.
@@ -1676,6 +1685,9 @@
     "shell": "system",
     // Where to dock terminals panel. Can be `left`, `right`, `bottom`.
     "dock": "bottom",
+    // Override the global `dock_panel_mode` for the terminal panel.
+    // Valid values: "push", "overlay"
+    // "dock_panel_mode": "overlay",
     // Default width when the terminal is docked to the left or right.
     "default_width": 640,
     // Default height when the terminal is docked to the bottom.
@@ -2540,6 +2552,9 @@
     "save_breakpoints": true,
     "timeout": 2000,
     "dock": "bottom",
+    // Override the global `dock_panel_mode` for the debug panel.
+    // Valid values: "push", "overlay"
+    // "dock_panel_mode": "overlay",
     "log_dap_communications": true,
     "format_dap_log_messages": true,
     "button": true,

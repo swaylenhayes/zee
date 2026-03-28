@@ -11,7 +11,8 @@ use project::DisableAiSettings;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use settings::{
-    DefaultAgentView, DockPosition, LanguageModelParameters, LanguageModelSelection,
+    DefaultAgentView, DockPanelMode, DockPosition, LanguageModelParameters,
+    LanguageModelSelection,
     NewThreadLocation, NotifyWhenAgentWaiting, RegisterSetting, Settings, SidebarDockPosition,
     SidebarSide, ToolPermissionMode,
 };
@@ -28,6 +29,7 @@ pub struct AgentSettings {
     pub button: bool,
     pub dock: DockPosition,
     pub sidebar_side: SidebarDockPosition,
+    pub dock_panel_mode: Option<DockPanelMode>,
     pub default_width: Pixels,
     pub default_height: Pixels,
     pub default_model: Option<LanguageModelSelection>,
@@ -421,6 +423,7 @@ impl Settings for AgentSettings {
             button: agent.button.unwrap(),
             dock: agent.dock.unwrap(),
             sidebar_side: agent.sidebar_side.unwrap(),
+            dock_panel_mode: agent.dock_panel_mode,
             default_width: px(agent.default_width.unwrap()),
             default_height: px(agent.default_height.unwrap()),
             default_model: Some(agent.default_model.unwrap()),

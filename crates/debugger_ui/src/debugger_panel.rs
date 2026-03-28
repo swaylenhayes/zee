@@ -1570,6 +1570,10 @@ impl Panel for DebugPanel {
         });
     }
 
+    fn dock_panel_mode(&self, cx: &App) -> Option<settings::DockPanelMode> {
+        DebuggerSettings::get_global(cx).dock_panel_mode
+    }
+
     fn default_size(&self, _window: &Window, _: &App) -> Pixels {
         px(300.)
     }
