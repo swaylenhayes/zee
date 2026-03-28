@@ -27,17 +27,25 @@ You can keep the default push behavior, switch everything to overlay, or mix bot
 ```jsonc
 {
   "dock_panel_mode": "push",
-  "dock_panel_modes": {
-    "ProjectPanel": "overlay",
-    "GitPanel": "push",
-    "OutlinePanel": "overlay",
-    "CollaborationPanel": "overlay",
-    "TerminalPanel": "overlay"
+  "project_panel": {
+    "dock_panel_mode": "overlay"
+  },
+  "git_panel": {
+    "dock_panel_mode": "push"
+  },
+  "outline_panel": {
+    "dock_panel_mode": "overlay"
+  },
+  "collaboration_panel": {
+    "dock_panel_mode": "overlay"
+  },
+  "terminal": {
+    "dock_panel_mode": "overlay"
   }
 }
 ```
 
-`dock_panel_mode` is the global fallback. `dock_panel_modes` overrides it per panel.
+`dock_panel_mode` is the global fallback. Each panel can override it locally with its own `dock_panel_mode`.
 
 ### 2. Project Panel Sorting
 
