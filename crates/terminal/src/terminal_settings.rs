@@ -9,7 +9,7 @@ use serde::{Deserialize, Serialize};
 pub use settings::AlternateScroll;
 
 use settings::{
-    IntoGpui, PathHyperlinkRegex, RegisterSetting, ShowScrollbar, TerminalBlink,
+    DockPanelMode, IntoGpui, PathHyperlinkRegex, RegisterSetting, ShowScrollbar, TerminalBlink,
     TerminalDockPosition, TerminalLineHeight, VenvSettings, WorkingDirectory,
     merge_from::MergeFrom,
 };
@@ -41,6 +41,7 @@ pub struct TerminalSettings {
     pub button: bool,
     pub dock: TerminalDockPosition,
     pub flexible: bool,
+    pub dock_panel_mode: Option<DockPanelMode>,
     pub default_width: Pixels,
     pub default_height: Pixels,
     pub detect_venv: VenvSettings,
@@ -109,9 +110,10 @@ impl settings::Settings for TerminalSettings {
             keep_selection_on_copy: user_content.keep_selection_on_copy.unwrap(),
             button: user_content.button.unwrap(),
             dock: user_content.dock.unwrap(),
+            flexible: user_content.flexible.unwrap(),
+            dock_panel_mode: user_content.dock_panel_mode,
             default_width: px(user_content.default_width.unwrap()),
             default_height: px(user_content.default_height.unwrap()),
-            flexible: user_content.flexible.unwrap(),
             detect_venv: project_content.detect_venv.unwrap(),
             scroll_multiplier: user_content.scroll_multiplier.unwrap(),
             max_scroll_history_lines: user_content.max_scroll_history_lines,

@@ -10208,7 +10208,12 @@ async fn test_sort_by_modified_time_toggle(cx: &mut gpui::TestAppContext) {
 
     assert_eq!(
         visible_entries_as_strings(&panel, 0..50, cx),
-        &["v root", "      alpha.txt", "      beta.txt", "      gamma.txt",]
+        &[
+            "v root",
+            "      alpha.txt",
+            "      beta.txt",
+            "      gamma.txt",
+        ]
     );
 
     cx.update(|_, cx| {
@@ -10226,14 +10231,21 @@ async fn test_sort_by_modified_time_toggle(cx: &mut gpui::TestAppContext) {
 
     assert_eq!(
         visible_entries_as_strings(&panel, 0..50, cx),
-        &["v root", "      beta.txt", "      alpha.txt", "      gamma.txt",]
+        &[
+            "v root",
+            "      beta.txt",
+            "      alpha.txt",
+            "      gamma.txt",
+        ]
     );
 
     cx.update(|_, cx| {
         cx.update_global::<SettingsStore, _>(|store, cx| {
             store.update_user_settings(cx, |settings| {
-                settings.project_panel.get_or_insert_default().sort_direction =
-                    Some(settings::ProjectPanelSortDirection::Ascending);
+                settings
+                    .project_panel
+                    .get_or_insert_default()
+                    .sort_direction = Some(settings::ProjectPanelSortDirection::Ascending);
             });
         });
     });
@@ -10241,7 +10253,12 @@ async fn test_sort_by_modified_time_toggle(cx: &mut gpui::TestAppContext) {
 
     assert_eq!(
         visible_entries_as_strings(&panel, 0..50, cx),
-        &["v root", "      gamma.txt", "      alpha.txt", "      beta.txt",]
+        &[
+            "v root",
+            "      gamma.txt",
+            "      alpha.txt",
+            "      beta.txt",
+        ]
     );
 }
 
@@ -10294,7 +10311,11 @@ fn test_sort_by_modified_time_with_mixed_known_and_missing_mtimes_is_stable() {
     let mut entries = vec![
         test_git_entry("alpha.txt", true, Some(MTime::from_seconds_and_nanos(1, 0))),
         test_git_entry("beta.txt", true, None),
-        test_git_entry("charlie.txt", true, Some(MTime::from_seconds_and_nanos(2, 0))),
+        test_git_entry(
+            "charlie.txt",
+            true,
+            Some(MTime::from_seconds_and_nanos(2, 0)),
+        ),
     ];
 
     sort_worktree_entries(
@@ -10333,7 +10354,11 @@ fn test_sort_by_modified_time_with_mixed_known_and_missing_mtimes_is_stable() {
 #[test]
 fn test_sort_by_modified_time_preserves_grouping() {
     let mut entries = vec![
-        test_git_entry("alpha.txt", true, Some(MTime::from_seconds_and_nanos(10, 0))),
+        test_git_entry(
+            "alpha.txt",
+            true,
+            Some(MTime::from_seconds_and_nanos(10, 0)),
+        ),
         test_git_entry("docs", false, Some(MTime::from_seconds_and_nanos(1, 0))),
         test_git_entry("beta.txt", true, Some(MTime::from_seconds_and_nanos(20, 0))),
         test_git_entry("src", false, Some(MTime::from_seconds_and_nanos(30, 0))),
@@ -10867,13 +10892,17 @@ async fn test_escape_binding_routes_to_project_panel_dismiss(cx: &mut gpui::Test
         let (project_panel_bindings, _) =
             keymap.bindings_for_input(&input, &[project_panel_context]);
         assert_eq!(
-            project_panel_bindings.first().map(|binding| binding.action().name()),
+            project_panel_bindings
+                .first()
+                .map(|binding| binding.action().name()),
             Some("project_panel::Dismiss"),
         );
 
         let (default_bindings, _) = keymap.bindings_for_input(&input, &[default_context]);
         assert_eq!(
-            default_bindings.first().map(|binding| binding.action().name()),
+            default_bindings
+                .first()
+                .map(|binding| binding.action().name()),
             Some("menu::Cancel"),
         );
     });

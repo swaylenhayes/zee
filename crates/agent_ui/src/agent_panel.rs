@@ -3343,6 +3343,10 @@ impl Panel for AgentPanel {
         });
     }
 
+    fn dock_panel_mode(&self, cx: &App) -> Option<settings::DockPanelMode> {
+        AgentSettings::get_global(cx).dock_panel_mode
+    }
+
     fn default_size(&self, window: &Window, cx: &App) -> Pixels {
         let settings = AgentSettings::get_global(cx);
         match self.position(window, cx) {

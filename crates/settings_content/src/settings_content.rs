@@ -461,6 +461,10 @@ pub struct DebuggerSettingsContent {
     ///
     /// Default: Bottom
     pub dock: Option<DockPosition>,
+    /// Overrides the global dock panel display mode for the debug panel.
+    ///
+    /// Default: inherits `dock_panel_mode`
+    pub dock_panel_mode: Option<DockPanelMode>,
 }
 
 /// The granularity of one 'step' in the stepping requests `next`, `stepIn`, `stepOut`, and `stepBack`.
@@ -536,6 +540,10 @@ pub struct GitPanelSettingsContent {
     ///
     /// Default: left
     pub dock: Option<DockPosition>,
+    /// Overrides the global dock panel display mode for the git panel.
+    ///
+    /// Default: inherits `dock_panel_mode`
+    pub dock_panel_mode: Option<DockPanelMode>,
     /// Default width of the panel in pixels.
     ///
     /// Default: 360
@@ -639,6 +647,10 @@ pub struct PanelSettingsContent {
     ///
     /// Default: left
     pub dock: Option<DockPosition>,
+    /// Overrides the global dock panel display mode for the panel.
+    ///
+    /// Default: inherits `dock_panel_mode`
+    pub dock_panel_mode: Option<DockPanelMode>,
     /// Default width of the panel in pixels.
     ///
     /// Default: 240
@@ -881,6 +893,10 @@ pub struct OutlinePanelSettingsContent {
     ///
     /// Default: left
     pub dock: Option<DockSide>,
+    /// Overrides the global dock panel display mode for the outline panel.
+    ///
+    /// Default: inherits `dock_panel_mode`
+    pub dock_panel_mode: Option<DockPanelMode>,
     /// Whether to show file icons in the outline panel.
     ///
     /// Default: true

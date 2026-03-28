@@ -1,9 +1,6 @@
 use std::{num::NonZeroUsize, time::Duration};
 
-use crate::{
-    DockPosition,
-    dock::{Dock, Panel},
-};
+use crate::DockPosition;
 use collections::HashMap;
 use serde::Deserialize;
 pub use settings::{
@@ -17,7 +14,6 @@ pub struct WorkspaceSettings {
     pub active_pane_modifiers: ActivePanelModifiers,
     pub bottom_dock_layout: settings::BottomDockLayout,
     pub dock_panel_mode: settings::DockPanelMode,
-    pub dock_panel_modes: HashMap<String, settings::DockPanelMode>,
     pub pane_split_direction_horizontal: settings::PaneSplitDirectionHorizontal,
     pub pane_split_direction_vertical: settings::PaneSplitDirectionVertical,
     pub centered_layout: settings::CenteredLayoutSettings,
@@ -98,7 +94,6 @@ impl Settings for WorkspaceSettings {
             },
             bottom_dock_layout: workspace.bottom_dock_layout.unwrap(),
             dock_panel_mode: workspace.dock_panel_mode.unwrap(),
-            dock_panel_modes: workspace.dock_panel_modes.clone().unwrap_or_default(),
             pane_split_direction_horizontal: workspace.pane_split_direction_horizontal.unwrap(),
             pane_split_direction_vertical: workspace.pane_split_direction_vertical.unwrap(),
             centered_layout: workspace.centered_layout.unwrap(),
@@ -150,21 +145,8 @@ impl WorkspaceSettings {
         self.dock_panel_mode
     }
 
-    pub fn resolved_dock_panel_mode_for_key(&self, panel_key: &str) -> DockPanelMode {
-        self.dock_panel_modes
-            .get(panel_key)
-            .copied()
-            .unwrap_or(self.dock_panel_mode)
-    }
-
-    pub fn resolved_dock_mode_for_panel<T: Panel>(&self) -> DockPanelMode {
-        self.resolved_dock_panel_mode_for_key(T::panel_key())
-    }
-
-    pub fn resolved_dock_mode_for_dock(&self, dock: &Dock) -> DockPanelMode {
-        dock.active_panel()
-            .map(|panel| self.resolved_dock_panel_mode_for_key(panel.panel_key()))
-            .unwrap_or_else(|| self.fallback_dock_panel_mode())
+    pub fn resolved_dock_panel_mode(&self, local_override: Option<DockPanelMode>) -> DockPanelMode {
+        local_override.unwrap_or(self.dock_panel_mode)
     }
 }
 

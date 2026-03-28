@@ -133,6 +133,10 @@ pub struct TerminalSettingsContent {
     ///
     /// Default: true
     pub flexible: Option<bool>,
+    /// Overrides the global dock panel display mode for the terminal panel.
+    ///
+    /// Default: inherits `dock_panel_mode`
+    pub dock_panel_mode: Option<crate::DockPanelMode>,
     /// Default width when the terminal is docked to the left or right.
     ///
     /// Default: 640

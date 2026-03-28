@@ -4893,6 +4893,10 @@ impl Panel for OutlinePanel {
         OutlinePanelSettings::get_global(cx).default_width
     }
 
+    fn dock_panel_mode(&self, cx: &App) -> Option<settings::DockPanelMode> {
+        OutlinePanelSettings::get_global(cx).dock_panel_mode
+    }
+
     fn icon(&self, _: &Window, cx: &App) -> Option<IconName> {
         OutlinePanelSettings::get_global(cx)
             .button

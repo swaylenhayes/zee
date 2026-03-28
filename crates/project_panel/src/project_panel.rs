@@ -2023,7 +2023,9 @@ impl ProjectPanel {
         }
 
         if let Some(workspace) = self.workspace.upgrade()
-            && workspace.read(cx).panel_is_overlay_visible::<ProjectPanel>(cx)
+            && workspace
+                .read(cx)
+                .panel_is_overlay_visible::<ProjectPanel>(cx)
         {
             window.defer(cx, move |window, cx| {
                 workspace.update(cx, |workspace, cx| {
@@ -7261,6 +7263,10 @@ impl Panel for ProjectPanel {
 
     fn default_size(&self, _: &Window, cx: &App) -> Pixels {
         ProjectPanelSettings::get_global(cx).default_width
+    }
+
+    fn dock_panel_mode(&self, cx: &App) -> Option<settings::DockPanelMode> {
+        ProjectPanelSettings::get_global(cx).dock_panel_mode
     }
 
     fn icon(&self, _: &Window, cx: &App) -> Option<IconName> {

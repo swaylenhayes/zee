@@ -12,10 +12,10 @@ use project::DisableAiSettings;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use settings::{
-    DockPosition, DockSide, LanguageModelParameters, LanguageModelSelection, NewThreadLocation,
-    NotifyWhenAgentWaiting, PlaySoundWhenAgentDone, RegisterSetting, Settings, SettingsContent,
-    SettingsStore, SidebarDockPosition, SidebarSide, ThinkingBlockDisplay, ToolPermissionMode,
-    update_settings_file,
+    DefaultAgentView, DockPanelMode, DockPosition, DockSide, LanguageModelParameters,
+    LanguageModelSelection, NewThreadLocation, NotifyWhenAgentWaiting, PlaySoundWhenAgentDone,
+    RegisterSetting, Settings, SettingsContent, SettingsStore, SidebarDockPosition, SidebarSide,
+    ThinkingBlockDisplay, ToolPermissionMode, update_settings_file,
 };
 
 pub use crate::agent_profile::*;
@@ -139,6 +139,7 @@ pub struct AgentSettings {
     pub dock: DockPosition,
     pub flexible: bool,
     pub sidebar_side: SidebarDockPosition,
+    pub dock_panel_mode: Option<DockPanelMode>,
     pub default_width: Pixels,
     pub default_height: Pixels,
     pub max_content_width: Pixels,
@@ -586,6 +587,7 @@ impl Settings for AgentSettings {
             button: agent.button.unwrap(),
             dock: agent.dock.unwrap(),
             sidebar_side: agent.sidebar_side.unwrap(),
+            dock_panel_mode: agent.dock_panel_mode,
             default_width: px(agent.default_width.unwrap()),
             default_height: px(agent.default_height.unwrap()),
             max_content_width: px(agent.max_content_width.unwrap()),

@@ -2,7 +2,7 @@ use editor::{EditorSettings, ui_scrollbar_settings_from_raw};
 use gpui::Pixels;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use settings::{RegisterSetting, Settings, StatusStyle};
+use settings::{DockPanelMode, RegisterSetting, Settings, StatusStyle};
 use ui::{
     px,
     scrollbars::{ScrollbarVisibility, ShowScrollbar},
@@ -18,6 +18,7 @@ pub struct ScrollbarSettings {
 pub struct GitPanelSettings {
     pub button: bool,
     pub dock: DockPosition,
+    pub dock_panel_mode: Option<DockPanelMode>,
     pub default_width: Pixels,
     pub status_style: StatusStyle,
     pub file_icons: bool,
@@ -58,6 +59,7 @@ impl Settings for GitPanelSettings {
         Self {
             button: git_panel.button.unwrap(),
             dock: git_panel.dock.unwrap().into(),
+            dock_panel_mode: git_panel.dock_panel_mode,
             default_width: px(git_panel.default_width.unwrap()),
             status_style: git_panel.status_style.unwrap(),
             file_icons: git_panel.file_icons.unwrap(),

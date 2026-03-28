@@ -1566,6 +1566,10 @@ impl Panel for TerminalPanel {
         });
     }
 
+    fn dock_panel_mode(&self, cx: &App) -> Option<settings::DockPanelMode> {
+        TerminalSettings::get_global(cx).dock_panel_mode
+    }
+
     fn default_size(&self, window: &Window, cx: &App) -> Pixels {
         let settings = TerminalSettings::get_global(cx);
         match self.position(window, cx) {
