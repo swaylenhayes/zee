@@ -12980,6 +12980,65 @@ mod tests {
     }
 
     #[gpui::test]
+    async fn switching_from_push_panel_to_overlay_panel_on_right_promotes_right_dock_to_overlay(
+        cx: &mut gpui::TestAppContext,
+    ) {
+        init_test(cx);
+        set_dock_panel_mode(cx, DockPanelMode::Push);
+
+        let fs = FakeFs::new(cx.executor());
+        let project = Project::test(fs, [], cx).await;
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
+
+        workspace.update_in(cx, |workspace, window, cx| {
+            let project_panel = cx.new(|cx| {
+                TestProjectPanel::new_with_mode(DockPosition::Right, DockPanelMode::Overlay, cx)
+            });
+            workspace.add_panel(project_panel, window, cx);
+
+            let other_panel = cx.new(|cx| TestPanel::new(DockPosition::Right, 50, cx));
+            workspace.add_panel(other_panel, window, cx);
+
+            workspace.toggle_panel_focus::<TestPanel>(window, cx);
+        });
+        cx.run_until_parked();
+
+        workspace.update_in(cx, |workspace, window, cx| {
+            assert!(!workspace.overlay_docks_visible(cx));
+            workspace.toggle_panel_visibility::<TestProjectPanel>(window, cx);
+        });
+        cx.run_until_parked();
+
+        workspace.update_in(cx, |workspace, window, cx| {
+            assert!(
+                workspace.overlay_docks_visible(cx),
+                "switching to an overlay-mode panel should move the right dock into the overlay layer"
+            );
+            assert!(
+                workspace.dock_renders_as_overlay(
+                    DockPosition::Right,
+                    workspace.right_dock(),
+                    cx
+                ),
+                "right dock should render as an overlay for the project panel"
+            );
+
+            let visible_panel = workspace
+                .right_dock()
+                .read(cx)
+                .visible_panel()
+                .expect("right dock should have a visible panel");
+            assert_eq!(visible_panel.panel_key(), TestProjectPanel::panel_key());
+
+            let project_panel = workspace
+                .panel::<TestProjectPanel>(cx)
+                .expect("project panel exists");
+            assert!(project_panel.read(cx).focus_handle(cx).contains_focused(window, cx));
+        });
+    }
+
+    #[gpui::test]
     async fn dismiss_overlay_docks_leaves_push_mode_docks_open(cx: &mut gpui::TestAppContext) {
         init_test(cx);
         set_dock_panel_mode(cx, DockPanelMode::Push);
