@@ -12,6 +12,12 @@ This fork currently focuses on two practical changes:
 
 `main` stays aligned with upstream Zed. `zee` is the integrated fork branch where these workflow changes land.
 
+## Quick Look
+
+![Zee hero comparison](./docs/screenshots/scr-anno-push-vs-overlay-hero.png)
+
+![Zee project panel sorting](./docs/screenshots/ss-sorting-project-panel.gif)
+
 ## Why This Fork Exists
 
 In stock Zed, opening dock-backed panels often resizes the workspace. That is fine in some layouts, but it becomes frustrating when you are repeatedly checking the project tree, switching between panels, and trying to keep multiple editor windows stable on screen.
@@ -69,13 +75,9 @@ Current supported values:
 
 ## Demos
 
-README demo assets are in progress. The current plan is to add short animated captures for:
+The hero image and GIF above show the current fork behavior in action.
 
-- overlay vs push behavior
-- mixed panel modes in the same dock
-- optional multi-window workflow use
-
-Until those land, the settings examples above are the quickest way to try the fork behavior locally.
+Additional screenshots live under [`docs/screenshots`](./docs/screenshots).
 
 ## Branch Model
 
