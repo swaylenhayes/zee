@@ -12,10 +12,10 @@ use project::DisableAiSettings;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use settings::{
-    DefaultAgentView, DockPanelMode, DockPosition, DockSide, LanguageModelParameters,
-    LanguageModelSelection, NewThreadLocation, NotifyWhenAgentWaiting, PlaySoundWhenAgentDone,
-    RegisterSetting, Settings, SettingsContent, SettingsStore, SidebarDockPosition, SidebarSide,
-    ThinkingBlockDisplay, ToolPermissionMode, update_settings_file,
+    DockPanelMode, DockPosition, DockSide, LanguageModelParameters, LanguageModelSelection,
+    NewThreadLocation, NotifyWhenAgentWaiting, PlaySoundWhenAgentDone, RegisterSetting, Settings,
+    SettingsContent, SettingsStore, SidebarDockPosition, SidebarSide, ThinkingBlockDisplay,
+    ToolPermissionMode, update_settings_file,
 };
 
 pub use crate::agent_profile::*;

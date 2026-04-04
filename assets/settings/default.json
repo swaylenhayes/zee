@@ -996,8 +996,8 @@
     //
     // Default: true
     "flexible": true,
-    "sidebar_side": "follow_agent",
-    // Where to position the sidebar. Can be 'left', 'right', or 'follow_agent'.
+    // Where to position the sidebar. Can be 'left' or 'right'.
+    "sidebar_side": "left",
     // Override the global `dock_panel_mode` for the agent panel.
     // Valid values: "push", "overlay"
     // "dock_panel_mode": "overlay",
